@@ -1,0 +1,11 @@
+name: 3hustlers
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.8
+  - pip=21.1.3
+  - pip:
+    - openai
+    - python-decouple
+    - youtube_transcript_api
