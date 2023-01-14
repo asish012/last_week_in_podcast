@@ -1,4 +1,4 @@
-# Create Python Environment
+# Create Environment
 > conda env create -f environment.yml
 > conda activate 3hustlers
 > mkdir gpt3_logs
