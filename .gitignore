@@ -5,7 +5,14 @@
 *output*
 *summary_*
 *gpt3_logs/
+*logs/
 
+
+### Flask ###
+instance/*
+!instance/.gitignore
+.webassets-cache
+.env
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
