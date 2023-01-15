@@ -113,7 +113,10 @@ def summarize_with_openai(url):
     video_id, transcript = get_transcript(url)
 
     # Summarize the transcript (chunk by chunk if needed)
-    if transcript and len(transcript) < 20000:
+    if transcript:
+        if os.environ.get('TRANSCRIPT_LENGTH_RESTRICTION') and len(transcript) > 20000:
+            raise Exception('Transcript too long. More than 20000 character.')
+
         # Summarize transcript
         output_file = f'{basedir}/logs/summary_{video_id}_{time()}.txt'
         results = ask_gpt(transcript, f'{basedir}/prompts/prompt_summary.txt', 'SUMMARY')
