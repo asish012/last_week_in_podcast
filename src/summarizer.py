@@ -12,13 +12,23 @@ from decouple import config             # this is usually enough to read configs
 # import decouple                       # but in notebooks, you need this line and the following one
 # config = decouple.AutoConfig('.')     # (this is the second line)
 
+basedir = os.path.abspath(os.path.dirname(__file__))
 openai.api_key = config('OPENAI_KEY')
 
-def get_transcript(url):
+
+def get_video_id(url):
     url_data = urlparse(url)
     video_id = parse_qs(url_data.query)["v"][0]
     if not video_id:
-        print('Video ID not found.')
+        raise Exception('Video ID not found')
+    return video_id
+
+
+def get_transcript(url):
+    video_id = get_video_id(url)
+    if not video_id:
+        raise Exception('Video ID not found')
+        # print('Video ID not found.')
         return None
 
     try:
@@ -30,7 +40,8 @@ def get_transcript(url):
         return video_id, text
 
     except Exception as e:
-        print('Error downloading transcript:', e)
+        raise Exception('Could not download the transcript')
+        # print('Error downloading transcript:', e)
         return None
 
 
@@ -44,7 +55,7 @@ def save_file(content, filepath):
         outfile.write(content)
 
 
-def gpt3_completion(prompt, model='text-davinci-003', temp=0.5, top_p=1.0, tokens=500, freq_pen=0.25, pres_pen=0.0, stop=['###']):
+def gpt3_completion(prompt, model='text-curie-001', temp=0.5, top_p=1.0, tokens=500, freq_pen=0.25, pres_pen=0.0, stop=['###']):
     max_retry = 3
     retry = 0
     while True:
@@ -64,7 +75,7 @@ def gpt3_completion(prompt, model='text-davinci-003', temp=0.5, top_p=1.0, token
                 retry += 1
                 continue
             filename = f'gpt3_{time()}.log'
-            with open(f'gpt3_logs/{filename}', 'w') as outfile:
+            with open(f'{basedir}/logs/{filename}', 'w') as outfile:
                 outfile.write('PROMPT:\n\n' + prompt + '\n\n==========\n\nRESPONSE:\n\n' + text)
             return text
 
@@ -72,11 +83,11 @@ def gpt3_completion(prompt, model='text-davinci-003', temp=0.5, top_p=1.0, token
             retry += 1
             if retry >= max_retry:
                 return "GPT3 error: %s" % e
-            print('Error communicating with OpenAI:', e)
+            # print('Error communicating with OpenAI:', e)
             sleep(1)
 
 
-def ask_gpt(text, prompt_file, output_file, job='SUMMARY'):
+def ask_gpt(text, prompt_file, job='SUMMARY'):
     # Summarize chunks
     chunks = textwrap.wrap(text, width=10000)
     results = list()
@@ -89,33 +100,35 @@ def ask_gpt(text, prompt_file, output_file, job='SUMMARY'):
         elif job == 'REWRITE':
             output = gpt3_completion(prompt, tokens=2048)
         results.append(output)
-        print(f'{i+1} of {len(chunks)}\n{output}\n\n\n')
+        # print(f'{i+1} of {len(chunks)}\n{output}\n\n\n')
 
     return results
 
 
-def main():
-    # Download transcript
-    # url = 'https://www.youtube.com/watch?v=kiMTRQXBol0&ab_channel=All-InPodcast'  # 1hr podcast
-    url = 'https://www.youtube.com/watch?v=Vt_t4hCjvuc'     # 7min video
+# url = 'https://www.youtube.com/watch?v=kiMTRQXBol0&ab_channel=All-InPodcast'  # 1hr podcast
+# url = 'https://www.youtube.com/watch?v=Vt_t4hCjvuc'                           # 7min video
+def summarize_with_openai(url):
 
-    video_id, text = get_transcript(url)
+    # Download transcript
+    video_id, transcript = get_transcript(url)
 
     # Summarize the transcript (chunk by chunk if needed)
-    if text:
+    if transcript and len(transcript) < 20000:
         # Summarize transcript
-        output_file = f'summary_{video_id}_{time()}.txt'
-        results = ask_gpt(text, 'prompt_summary.txt', 'SUMMARY')
+        output_file = f'{basedir}/logs/summary_{video_id}_{time()}.txt'
+        results = ask_gpt(transcript, f'{basedir}/prompts/prompt_summary.txt', 'SUMMARY')
         summary = '\n\n'.join(results)
         save_file(summary, output_file)
 
         # Summarize the summary
+        new_summary = ''
         if len(results) > 1:
-            new_summary = ask_gpt(summary, 'prompt_rewrite.txt', 'REWRITE')
+            new_summary = ask_gpt(summary, f'{basedir}/prompts/prompt_rewrite.txt', 'REWRITE')
             save_file('\n\n'.join(new_summary), output_file.replace('.txt', '_2.txt'))
 
+        return url, video_id, summary, new_summary, transcript
         print('----- Mission Complete -----')
 
 
-if __name__=="__main__":
-    main()
+# if __name__=="__main__":
+#     summarize()
