@@ -5,7 +5,7 @@ from flask.json import jsonify
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from src.database import Summary, db
 from src.summarizer import summarize_with_openai, get_video_id
-from src.constants.http_status_codes import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_409_CONFLICT
+from src.constants.http_status_codes import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_409_CONFLICT, HTTP_500_INTERNAL_SERVER_ERROR
 
 summary = Blueprint("summary", __name__, url_prefix="/api/v1/summary")
 
@@ -28,23 +28,26 @@ def save_summary():
             'error': 'Video summary already exists'
         }), HTTP_409_CONFLICT
 
-    url, video_id, summary_1, summary_2, transcript = summarize_with_openai(url)
+    try:
+        url, video_id, summary_1, summary_2, transcript = summarize_with_openai(url)
 
-    yt_summary = Summary(url=url, video_id=video_id, summary_1=summary_1, summary_2=summary_2, transcript=transcript, user_id=current_user)
-    db.session.add(yt_summary)
-    db.session.commit()
+        yt_summary = Summary(url=url, video_id=video_id, summary_1=summary_1, summary_2=summary_2, transcript=transcript, user_id=current_user)
+        db.session.add(yt_summary)
+        db.session.commit()
 
-    return jsonify({
-        'id': yt_summary.id,
-        'url': yt_summary.url,
-        'video_id': yt_summary.video_id,
-        'summary_1': yt_summary.summary_1,
-        'summary_2': yt_summary.summary_2,
-        'transcript': yt_summary.transcript,
-        'user_id': yt_summary.user_id,
-        'created_at': yt_summary.created_at,
-        'updated_at': yt_summary.updated_at,
-    }), HTTP_201_CREATED
+        return jsonify({
+            'id': yt_summary.id,
+            'url': yt_summary.url,
+            'video_id': yt_summary.video_id,
+            'summary_1': yt_summary.summary_1,
+            'summary_2': yt_summary.summary_2,
+            'transcript': yt_summary.transcript,
+            'user_id': yt_summary.user_id,
+            'created_at': yt_summary.created_at,
+            'updated_at': yt_summary.updated_at,
+        }), HTTP_201_CREATED
+    except Exception as e:
+        return jsonify({'message': str(e)}), HTTP_500_INTERNAL_SERVER_ERROR
 
 
 @summary.get("/<string:video_id>")

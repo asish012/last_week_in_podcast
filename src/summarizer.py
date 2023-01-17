@@ -115,7 +115,7 @@ def summarize_with_openai(url):
     # Summarize the transcript (chunk by chunk if needed)
     if transcript:
         if os.environ.get('TRANSCRIPT_LENGTH_RESTRICTION') and len(transcript) > 20000:
-            raise Exception('Transcript too long. More than 20000 character.')
+            raise Exception('Transcript too long. Your wallets health and well-being is important to us (unlike your wife)')
 
         # Summarize transcript
         output_file = f'{basedir}/logs/summary_{video_id}_{time()}.txt'
