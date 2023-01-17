@@ -55,7 +55,7 @@ def save_file(content, filepath):
         outfile.write(content)
 
 
-def gpt3_completion(prompt, model='text-curie-001', temp=0.5, top_p=1.0, tokens=500, freq_pen=0.25, pres_pen=0.0, stop=['###']):
+def gpt3_completion(prompt, model='text-davinci-003', temp=0.5, top_p=1.0, tokens=500, freq_pen=0.25, pres_pen=0.0, stop=['###']):
     max_retry = 3
     retry = 0
     while True:
@@ -82,7 +82,7 @@ def gpt3_completion(prompt, model='text-curie-001', temp=0.5, top_p=1.0, tokens=
         except Exception as e:
             retry += 1
             if retry >= max_retry:
-                return "GPT3 error: %s" % e
+                raise Exception(f'GPT3 error: {str(e)}')
             # print('Error communicating with OpenAI:', e)
             sleep(1)
 
@@ -114,22 +114,23 @@ def summarize_with_openai(url):
 
     # Summarize the transcript (chunk by chunk if needed)
     if transcript:
-        if os.environ.get('TRANSCRIPT_LENGTH_RESTRICTION') and len(transcript) > 20000:
-            raise Exception('Transcript too long. More than 20000 character.')
+        if (os.environ.get('TRANSCRIPT_LENGTH_RESTRICTION') == 1) and (len(transcript) > 20000):
+            raise Exception('Transcript too long. Your wallets health and well-being is important to us (unlike your wife)')
 
         # Summarize transcript
         output_file = f'{basedir}/logs/summary_{video_id}_{time()}.txt'
-        results = ask_gpt(transcript, f'{basedir}/prompts/prompt_summary.txt', 'SUMMARY')
-        summary = '\n\n'.join(results)
-        save_file(summary, output_file)
+        results_1 = ask_gpt(transcript, f'{basedir}/prompts/prompt_summary.txt', 'SUMMARY')
+        summary_1 = '\n\n'.join(results_1)
+        save_file(summary_1, output_file)
 
         # Summarize the summary
-        new_summary = ''
-        if len(results) > 1:
-            new_summary = ask_gpt(summary, f'{basedir}/prompts/prompt_rewrite.txt', 'REWRITE')
-            save_file('\n\n'.join(new_summary), output_file.replace('.txt', '_2.txt'))
+        summary_2 = ''
+        if len(results_1) > 1:
+            results_2 = ask_gpt(summary_1, f'{basedir}/prompts/prompt_rewrite.txt', 'REWRITE')
+            summary_2 = '\n\n'.join(results_2)
+            save_file('\n\n'.join(summary_2), output_file.replace('.txt', '_2.txt'))
 
-        return url, video_id, summary, new_summary, transcript
+        return url, video_id, summary_1, summary_2, transcript
         print('----- Mission Complete -----')
 
 
