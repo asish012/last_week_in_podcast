@@ -4,6 +4,7 @@ conda env create -f environment.yml
 conda activate 3hustlers
 cd src
 mkdir logs
+cd ..
 ```
 
 # Environment variables
