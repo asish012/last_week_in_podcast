@@ -3,6 +3,7 @@
 docker build --tag youtubesummarizer .
 docker run -d -p 5000:5000 --name ytsummarizer youtubesummarizer
 ```
+
 ### Cleanup docker environment
 ```sh
 docker stop ytsummarizer
