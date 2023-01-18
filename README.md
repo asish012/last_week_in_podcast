@@ -1,10 +1,15 @@
-# Run YouTubeSummarizer as docker container
+# Environment variables
+Create a `.env` file similar to the `.env.sample` file and put secret keys there.
+
+**NEVER COMMIT THE ENV FILE**
+
+# Run YouTubeSummarizer as a docker container
 ```sh
 docker build --tag youtubesummarizer .
 docker run -d -p 5000:5000 --name ytsummarizer youtubesummarizer
 ```
 
-### Cleanup docker environment
+## Cleanup docker environment
 ```sh
 docker stop ytsummarizer
 docker rm ytsummarizer
@@ -18,16 +23,10 @@ conda activate 3hustlers
 mkdir src/logs
 ```
 
-### Environment variables
-Create a `.env` file similar to the `.env.sample` file and put secret keys there.
-
-**NEVER COMMIT THE ENV FILE**
-
-
-### Running Flask app
+## Running Flask app
 > flask run
 
-### Flask create database (if needed)
+## Flask create database (if needed)
 ```sh
 export FLASK_APP=~/Documents/workspace/3hustlers/youtubesummarizer/src
 flask shell
