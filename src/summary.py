@@ -24,9 +24,7 @@ def save_summary():
 
     video_id = get_video_id(url)
     if Summary.query.filter_by(video_id=video_id).first():
-        return jsonify({
-            'error': 'Video summary already exists'
-        }), HTTP_409_CONFLICT
+        return get_summary(video_id)
 
     try:
         url, video_id, summary_1, summary_2, transcript = summarize_with_openai(url)
