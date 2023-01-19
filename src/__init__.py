@@ -10,7 +10,7 @@ from src.database import db, Bookmark
 from datetime import timedelta
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-db_uri = 'sqlite:///' + os.path.join(basedir, 'youtubesummarizer.db')
+db_uri = 'sqlite:///' + os.path.join(basedir, 'db', 'youtubesummarizer.db')
 
 
 def create_app(test_config=None):

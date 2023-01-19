@@ -1,0 +1,24 @@
+version: '3.9'
+services:
+
+# YouTube Summarizer Service
+  youtubesummarizer:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: youtubesummarizer
+    container_name: ytsummarizer
+    restart: always
+    tty: true
+    ports:
+      - "5000:5000"
+    working_dir: /youtubesummarizer
+    volumes:
+      - ./src/db/youtubesummarizer.db:/youtubesummarizer/src/db/youtubesummarizer.db
+    networks:
+      - hustlers_network
+
+# Networks
+networks:
+  hustlers_network:
+    driver: bridge
