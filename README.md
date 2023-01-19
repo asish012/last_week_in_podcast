@@ -5,8 +5,7 @@ Create a `.env` file similar to the `.env.sample` file and put secret keys there
 
 # Run YouTubeSummarizer as a docker container
 ```sh
-docker build --tag youtubesummarizer .
-docker run -d -p 5000:5000 --name ytsummarizer youtubesummarizer
+docker-compose up --build -d
 ```
 
 ## Cleanup docker environment
