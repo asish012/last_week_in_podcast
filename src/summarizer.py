@@ -24,8 +24,7 @@ def get_video_id(url):
     return video_id
 
 
-def get_transcript(url):
-    video_id = get_video_id(url)
+def get_transcript(video_id):
     if not video_id:
         raise Exception('Video ID not found')
         # print('Video ID not found.')
@@ -37,7 +36,7 @@ def get_transcript(url):
         transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=['en'])
         text = formatter.format_transcript(transcript)
         text = re.sub('\s+', ' ', text).replace('--', '')
-        return video_id, text
+        return text
 
     except Exception as e:
         raise Exception('Could not download the transcript')
@@ -107,10 +106,10 @@ def ask_gpt(text, prompt_file, job='SUMMARY'):
 
 # url = 'https://www.youtube.com/watch?v=kiMTRQXBol0&ab_channel=All-InPodcast'  # 1hr podcast
 # url = 'https://www.youtube.com/watch?v=Vt_t4hCjvuc'                           # 7min video
-def summarize_with_openai(url):
+def summarize_with_openai(video_id):
 
     # Download transcript
-    video_id, transcript = get_transcript(url)
+    transcript = get_transcript(video_id)
 
     # Summarize the transcript (chunk by chunk if needed)
     if transcript:
@@ -130,7 +129,7 @@ def summarize_with_openai(url):
             summary_2 = '\n\n'.join(results_2)
             save_file('\n\n'.join(summary_2), output_file.replace('.txt', '_2.txt'))
 
-        return url, video_id, summary_1, summary_2, transcript
+        return summary_1, summary_2, transcript
         print('----- Mission Complete -----')
 
 
