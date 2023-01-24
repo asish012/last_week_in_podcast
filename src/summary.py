@@ -12,11 +12,8 @@ summary = Blueprint("summary", __name__, url_prefix="/api/v1/summary")
 
 def jsonify_ytsummary(yt_summary):
     return jsonify({
-        'id': yt_summary.id,
         'video_id': yt_summary.video_id,
-        'summary_1': yt_summary.summary_1,
-        'summary_2': yt_summary.summary_2,
-        'transcript': yt_summary.transcript,
+        'summary': yt_summary.summary_2 or yt_summary.summary_1,
         'user_id': yt_summary.user_id,
         'created_at': yt_summary.created_at,
         'updated_at': yt_summary.updated_at,
@@ -28,7 +25,7 @@ def jsonify_ytsummary(yt_summary):
 def save_summary():
     current_user = get_jwt_identity()
 
-    video_id = request.get_json().get('id', '')
+    video_id = request.get_json().get('video_id', '')
 
     yt_summary = Summary.query.filter_by(video_id=video_id).first()
     if yt_summary:
@@ -49,8 +46,6 @@ def save_summary():
 @summary.get("/<string:video_id>")
 @jwt_required()
 def get_summary(video_id):
-    current_user = get_jwt_identity()
-
     yt_summary = Summary.query.filter_by(video_id=video_id).first()
 
     if not yt_summary:
