@@ -27,7 +27,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"user23\",\n    \"password\": \"password\",\n    \"email\": \"user23@email.com\"\n}",
+							"raw": "{\n    \"username\": \"ChuckNorris\",\n    \"password\": \"password\",\n    \"email\": \"gmail@chucknorris.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -78,7 +78,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"user23@email.com\",\n    \"password\": \"password\"\n}",
+							"raw": "{\n    \"email\": \"gmail@chucknorris.com\",\n    \"password\": \"password\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -162,7 +162,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"url\": \"https://www.youtube.com/watch?v=Cf0L4IfdRA4\"\n}",
+							"raw": "{\n    \"video_id\": \"JYtZ2zsdE_s\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -190,6 +190,9 @@
 				},
 				{
 					"name": "get summary",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -203,8 +206,17 @@
 						},
 						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/api/v1/summary/Cf0L4IfdRA4",
+							"raw": "http://127.0.0.1:5000/api/v1/summary/fHMNYnjuXak",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -217,7 +229,7 @@
 								"api",
 								"v1",
 								"summary",
-								"Cf0L4IfdRA4"
+								"fHMNYnjuXak"
 							]
 						}
 					},
@@ -253,6 +265,169 @@
 								"v1",
 								"summary",
 								"Cf0L4IfdRA4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bookmarks",
+			"item": [
+				{
+					"name": "create bookmarks",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"url\": \"https://beta.openai.com/playground\",\n    \"body\": \"OpenAI Playground\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/api/v1/bookmarks/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"bookmarks",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "bookmarks/id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/api/v1/bookmarks/2",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"bookmarks",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update bookmarks/id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"url\": \"https://chat.openai.com/chat\",\n    \"body\": \"OpenAI ChatGPT\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/api/v1/bookmarks/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"bookmarks",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all bookmarks",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/api/v1/bookmarks/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"bookmarks",
+								""
 							]
 						}
 					},

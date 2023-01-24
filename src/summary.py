@@ -10,40 +10,35 @@ from src.constants.http_status_codes import HTTP_200_OK, HTTP_201_CREATED, HTTP_
 summary = Blueprint("summary", __name__, url_prefix="/api/v1/summary")
 
 
+def jsonify_ytsummary(yt_summary):
+    return jsonify({
+        'video_id': yt_summary.video_id,
+        'summary': yt_summary.summary_2 or yt_summary.summary_1,
+        'user_id': yt_summary.user_id,
+        'created_at': yt_summary.created_at,
+        'updated_at': yt_summary.updated_at,
+    })
+
+
 @summary.post('/')
 @jwt_required()
 def save_summary():
     current_user = get_jwt_identity()
 
-    url = request.get_json().get('url', '')
+    video_id = request.get_json().get('video_id', '')
 
-    if not validators.url(url):
-        return jsonify({
-            'error': 'Invalid url'
-        }), HTTP_400_BAD_REQUEST
-
-    video_id = get_video_id(url)
-    if Summary.query.filter_by(video_id=video_id).first():
-        return get_summary(video_id)
+    yt_summary = Summary.query.filter_by(video_id=video_id).first()
+    if yt_summary:
+        return jsonify_ytsummary(yt_summary), HTTP_200_OK
 
     try:
-        url, video_id, summary_1, summary_2, transcript = summarize_with_openai(url)
+        summary_1, summary_2, transcript = summarize_with_openai(video_id)
 
-        yt_summary = Summary(url=url, video_id=video_id, summary_1=summary_1, summary_2=summary_2, transcript=transcript, user_id=current_user)
+        yt_summary = Summary(video_id=video_id, summary_1=summary_1, summary_2=summary_2, transcript=transcript, user_id=current_user)
         db.session.add(yt_summary)
         db.session.commit()
 
-        return jsonify({
-            'id': yt_summary.id,
-            'url': yt_summary.url,
-            'video_id': yt_summary.video_id,
-            'summary_1': yt_summary.summary_1,
-            'summary_2': yt_summary.summary_2,
-            'transcript': yt_summary.transcript,
-            'user_id': yt_summary.user_id,
-            'created_at': yt_summary.created_at,
-            'updated_at': yt_summary.updated_at,
-        }), HTTP_201_CREATED
+        return jsonify_ytsummary(yt_summary), HTTP_201_CREATED
     except Exception as e:
         return jsonify({'message': str(e)}), HTTP_500_INTERNAL_SERVER_ERROR
 
@@ -51,24 +46,12 @@ def save_summary():
 @summary.get("/<string:video_id>")
 @jwt_required()
 def get_summary(video_id):
-    current_user = get_jwt_identity()
-
-    yt_summary = Summary.query.filter_by(user_id=current_user, video_id=video_id).first()
+    yt_summary = Summary.query.filter_by(video_id=video_id).first()
 
     if not yt_summary:
         return jsonify({'message': 'Item not found'}), HTTP_404_NOT_FOUND
 
-    return jsonify({
-        'id': yt_summary.id,
-        'url': yt_summary.url,
-        'video_id': yt_summary.video_id,
-        'summary_1': yt_summary.summary_1,
-        'summary_2': yt_summary.summary_2,
-        'transcript': yt_summary.transcript,
-        'user_id': yt_summary.user_id,
-        'created_at': yt_summary.created_at,
-        'updated_at': yt_summary.updated_at,
-    }), HTTP_200_OK
+    return jsonify_ytsummary(yt_summary), HTTP_200_OK
 
 
 @summary.delete("/<string:video_id>")
@@ -76,7 +59,7 @@ def get_summary(video_id):
 def delete_summary(video_id):
     current_user = get_jwt_identity()
 
-    yt_summary = Summary.query.filter_by(user_id=current_user, video_id=video_id).first()
+    yt_summary = Summary.query.filter_by(video_id=video_id).first()
 
     if not yt_summary:
         return jsonify({'message': 'Item not found'}), HTTP_404_NOT_FOUND
@@ -93,37 +76,20 @@ def delete_summary(video_id):
 def edit_summary(video_id):
     current_user = get_jwt_identity()
 
-    yt_summary = Summary.query.filter_by(user_id=current_user, video_id=video_id).first()
+    yt_summary = Summary.query.filter_by(video_id=video_id).first()
 
     if not yt_summary:
         return jsonify({'message': 'Item not found'}), HTTP_404_NOT_FOUND
 
-    url = request.get_json().get('url', '')
     video_id = request.get_json().get('video_id', '')
     summary_1 = request.get_json().get('summary_1', '')
     summary_2 = request.get_json().get('summary_2', '')
     transcript = request.get_json().get('transcript', '')
 
-    if not validators.url(url):
-        return jsonify({
-            'error': 'Invalid url'
-        }), HTTP_400_BAD_REQUEST
-
-    yt_summary.url = url
     yt_summary.summary_1 = summary_1
     yt_summary.summary_2 = summary_2
     yt_summary.transcript = transcript
 
     db.session.commit()
 
-    return jsonify({
-        'id': yt_summary.id,
-        'url': yt_summary.url,
-        'video_id': yt_summary.video_id,
-        'summary_1': yt_summary.summary_1,
-        'summary_2': yt_summary.summary_2,
-        'transcript': yt_summary.transcript,
-        'user_id': yt_summary.user_id,
-        'created_at': yt_summary.created_at,
-        'updated_at': yt_summary.updated_at,
-    }), HTTP_200_OK
+    return jsonify_ytsummary(yt_summary), HTTP_200_OK

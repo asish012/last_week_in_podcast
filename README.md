@@ -27,7 +27,7 @@ mkdir src/logs
 
 ## Flask create database (if needed)
 ```sh
-export FLASK_APP=~/Documents/workspace/3hustlers/youtubesummarizer/src
+export FLASK_APP=~/Documents/workspace/3hustlers/youtubesummarizer/src/db
 flask shell
 from src.database import db
 db.create_all()

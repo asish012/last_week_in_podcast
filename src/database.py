@@ -52,7 +52,6 @@ class Bookmark(db.Model):
 
 class Summary(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    url = db.Column(db.Text, nullable=False)
     video_id = db.Column(db.Text, nullable=False)
     summary_1 = db.Column(db.Text, nullable=True)
     summary_2 = db.Column(db.Text, nullable=True)
@@ -62,4 +61,4 @@ class Summary(db.Model):
     updated_at = db.Column(db.DateTime, onupdate=datetime.now())
 
     def __repr__(self) -> str:
-        return 'Summary>>> {self.url}\n{self.summary_2}'
+        return 'Summary>>> {self.video_id}\n{self.summary_2}'
