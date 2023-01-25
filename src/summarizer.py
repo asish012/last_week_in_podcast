@@ -96,7 +96,7 @@ def ask_gpt(text, prompt, job='SUMMARY'):
 
         output = ''
         if job=='SUMMARY':
-            output = gpt3_completion(constructed_prompt, tokens=500)
+            output = gpt3_completion(constructed_prompt, tokens=512)
         elif job == 'REWRITE':
             output = gpt3_completion(constructed_prompt, tokens=2048)
         results.append(output)
@@ -128,7 +128,7 @@ def summarize_with_openai(video_id, title, transcript):
     save_file(summary_1, summary_out)
 
     # Summarize the summary
-    prompt_rewrite = open_file(f_prompt_rewrite)
+    prompt_rewrite = open_file(f_prompt_rewrite).replace('<<TITLE>>', title)
     results_2 = ask_gpt(summary_1, prompt_rewrite, 'REWRITE')
     summary_2 = '\n\n'.join(results_2)
     save_file(summary_2, rewrite_out)
