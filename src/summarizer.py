@@ -86,25 +86,26 @@ def gpt3_completion(prompt, model='text-davinci-003', temp=0.5, top_p=1.0, token
             sleep(1)
 
 
-def ask_gpt(text, prompt_file, job='SUMMARY'):
+def ask_gpt(text, prompt, job='SUMMARY'):
     # Summarize chunks
     chunks = textwrap.wrap(text, width=10000)
     results = list()
     for i, chunk in enumerate(chunks):
-        prompt = open_file(prompt_file).replace('<<CONTENT>>', chunk)
-        prompt = prompt.encode(encoding='ASCII',errors='ignore').decode()
+        constructed_prompt = prompt.replace('<<CONTENT>>', chunk)
+        constructed_prompt = constructed_prompt.encode(encoding='ASCII',errors='ignore').decode()
+
         output = ''
         if job=='SUMMARY':
-            output = gpt3_completion(prompt, tokens=500)
+            output = gpt3_completion(constructed_prompt, tokens=500)
         elif job == 'REWRITE':
-            output = gpt3_completion(prompt, tokens=2048)
+            output = gpt3_completion(constructed_prompt, tokens=2048)
         results.append(output)
         # print(f'{i+1} of {len(chunks)}\n{output}\n\n\n')
 
     return results
 
 
-def summarize_with_openai(transcript, video_id):
+def summarize_with_openai(video_id, title, transcript):
 
     # Summarize the transcript (chunk by chunk if needed)
     if not transcript:
@@ -114,15 +115,23 @@ def summarize_with_openai(transcript, video_id):
         raise Exception('Transcript too long. Your wallets health and well-being is important to us (unlike your wife)')
 
     # Summarize transcript
-    output_file = f'{basedir}/logs/summary_{video_id}_{time()}.txt'
-    results_1 = ask_gpt(transcript, f'{basedir}/prompts/prompt_summary.txt', 'SUMMARY')
+    summary_out = f'{basedir}/logs/{video_id}_summary_{time()}.txt'
+    rewrite_out = f'{basedir}/logs/{video_id}_rewrite_{time()}.txt'
+
+    f_prompt_summary = f'{basedir}/prompts/prompt_summary.txt'
+    f_prompt_rewrite = f'{basedir}/prompts/prompt_rewrite.txt'
+
+    # Summarize
+    prompt_summary = open_file(f_prompt_summary).replace('<<TITLE>>', title)
+    results_1 = ask_gpt(transcript, prompt_summary, 'SUMMARY')
     summary_1 = '\n\n'.join(results_1)
-    save_file(summary_1, output_file)
+    save_file(summary_1, summary_out)
 
     # Summarize the summary
-    results_2 = ask_gpt(summary_1, f'{basedir}/prompts/prompt_rewrite.txt', 'REWRITE')
+    prompt_rewrite = open_file(f_prompt_rewrite)
+    results_2 = ask_gpt(summary_1, prompt_rewrite, 'REWRITE')
     summary_2 = '\n\n'.join(results_2)
-    save_file('\n\n'.join(summary_2), output_file.replace('.txt', '_2.txt'))
+    save_file(summary_2, rewrite_out)
 
     return summary_1, summary_2
     print('----- Mission Complete -----')
@@ -130,14 +139,14 @@ def summarize_with_openai(transcript, video_id):
 
 # url = 'https://www.youtube.com/watch?v=kiMTRQXBol0&ab_channel=All-InPodcast'  # 1hr podcast
 # url = 'https://www.youtube.com/watch?v=Vt_t4hCjvuc'                           # 7min video
-def summarize_video(video_id):
+def summarize_video(video_id, title):
     # Download transcript
     transcript = get_transcript(video_id)
 
-    summary_1, summary_2 = summarize_with_openai(transcript, video_id)
+    summary_1, summary_2 = summarize_with_openai(video_id, title, transcript)
 
     return summary_1, summary_2, transcript
 
 
 # if __name__=="__main__":
-#     summarize()
+#     summarize_video("VfAsu_dxw0g", "5 Tips and Misconceptions about Finetuning GPT-3")

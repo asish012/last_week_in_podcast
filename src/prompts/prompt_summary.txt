@@ -1,4 +1,4 @@
-Write a concise summary of the following:
+Write a concise summary of the following video transcript. The title of the video is "<<TITLE>>".
 
 
 <<CONTENT>>

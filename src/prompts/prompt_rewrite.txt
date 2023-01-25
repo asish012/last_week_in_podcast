@@ -1,6 +1,6 @@
-The following paragraphs are chunks of summaries of a long video. Organize these parts in short form with a logical flow. 
-The output should contain two parts. The first part will contain a short summary, and the second part will contain a list of paragraphs with the discussed topics in the video. The second part should also contain individual titles for each paragraphs.
-Provide the output in the following json format
+The following paragraphs are chunks of summaries of a long video. Organize these parts in short form summary with a logical flow. 
+The output should contain two parts. The first part will contain the short form summary, and the second part will contain an ordered list of all topics discussed along with details and titles.
+The final output should be in the following json format
 {"summary":"", "paragraphs":["title":"", "content":""]}
 Please follow these general rules:
 - Use an academic writing style
