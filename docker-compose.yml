@@ -15,6 +15,7 @@ services:
     working_dir: /youtubesummarizer
     volumes:
       - ./src/db/youtubesummarizer.db:/youtubesummarizer/src/db/youtubesummarizer.db
+      - ./src/logs:/youtubesummarizer/src/logs
     networks:
       - hustlers_network
 

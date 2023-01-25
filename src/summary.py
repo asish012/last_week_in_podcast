@@ -23,7 +23,7 @@ def jsonify_ytsummary(yt_summary):
             'updated_at': yt_summary.updated_at,
         })
     except Exception as e:
-        return jsonify({'message': 'Summary parsing error.'}), HTTP_500_INTERNAL_SERVER_ERROR
+        raise Exception('Summary parsing error.')
 
 
 @summary.post('/')
