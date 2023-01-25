@@ -1,11 +1,11 @@
-The following paragraphs are chunks of summaries of a long video with the title "<<TITLE>>". Organize these parts in a summary with a logical flow. 
+The following paragraphs are chunks of summaries of a long video with the title "<<TITLE>>". Organize these parts with a logical flow.
 The output should contain two parts. The first part will contain the short form summary, and the second part will contain an ordered list of all topics discussed along with details and titles.
 The final output should be in the following json format
 {"summary":"", "paragraphs":["title":"", "content":""]}
 Please follow these general rules:
     Use an active voice and academic writing style
 
-
+Summaries:
 <<CONTENT>>
 
 ###
