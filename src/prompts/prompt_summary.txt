@@ -1,4 +1,4 @@
-Write a long summary of the following video transcript. The title of the video is "<<TITLE>>".
+Please summarize the following video transcript in a few sentences, ensuring that the important information is included and the summary is not too long or too short. The title of the video is "<<TITLE>>".
 
 Transcript:
 <<CONTENT>>
