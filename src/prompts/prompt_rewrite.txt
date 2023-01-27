@@ -3,7 +3,9 @@ The output should contain two parts. The first part will contain the aggregated 
 The final output should be in the following json format
 {"summary":"", "paragraphs":["title":"", "content":""]}
 Please follow these general rules:
-    Use an active voice and academic writing style
+    Use active voice;
+    Use small and simple sentences;
+    Use a clear and consistent tone;
 
 Summaries:
 <<CONTENT>>
