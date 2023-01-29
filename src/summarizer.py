@@ -131,7 +131,7 @@ def summarize_with_openai(video_id, title, transcript, participants=None):
     save_file(summary_1, summary_out)
 
     # Summarize the summary
-    prompt_rewrite = open_file(f_prompt_rewrite).replace('<<TITLE>>', title).replace('<<PARTICIPANTS>>', participants)
+    prompt_rewrite = open_file(f_prompt_rewrite).replace('<<TITLE>>', title)
     if participants:
         prompt_rewrite = prompt_rewrite.replace('<<PARTICIPANTS>>', s_participants)
     results_2 = ask_gpt(summary_1, prompt_rewrite, 'REWRITE')
