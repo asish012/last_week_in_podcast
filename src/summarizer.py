@@ -105,7 +105,7 @@ def ask_gpt(text, prompt, job='SUMMARY'):
     return results
 
 
-def summarize_with_openai(video_id, title, transcript):
+def summarize_with_openai(video_id, title, transcript, participants=None):
 
     # Summarize the transcript (chunk by chunk if needed)
     if not transcript:
@@ -123,12 +123,16 @@ def summarize_with_openai(video_id, title, transcript):
 
     # Summarize
     prompt_summary = open_file(f_prompt_summary).replace('<<TITLE>>', title)
+    if participants:
+        prompt_summary = prompt_summary.replace('<<PARTICIPANTS>>', f'This is a conversation between {participants}.')
     results_1 = ask_gpt(transcript, prompt_summary, 'SUMMARY')
     summary_1 = '\n\n'.join(results_1)
     save_file(summary_1, summary_out)
 
     # Summarize the summary
-    prompt_rewrite = open_file(f_prompt_rewrite).replace('<<TITLE>>', title)
+    prompt_rewrite = open_file(f_prompt_rewrite).replace('<<TITLE>>', title).replace('<<PARTICIPANTS>>', participants)
+    if participants:
+        prompt_rewrite = prompt_rewrite.replace('<<PARTICIPANTS>>', f'This is a conversation between {participants}.')
     results_2 = ask_gpt(summary_1, prompt_rewrite, 'REWRITE')
     summary_2 = '\n\n'.join(results_2)
     save_file(summary_2, rewrite_out)
@@ -139,11 +143,11 @@ def summarize_with_openai(video_id, title, transcript):
 
 # url = 'https://www.youtube.com/watch?v=kiMTRQXBol0&ab_channel=All-InPodcast'  # 1hr podcast
 # url = 'https://www.youtube.com/watch?v=Vt_t4hCjvuc'                           # 7min video
-def summarize_video(video_id, title):
+def summarize_video(video_id, title, participants=None):
     # Download transcript
     transcript = get_transcript(video_id)
 
-    summary_1, summary_2 = summarize_with_openai(video_id, title, transcript)
+    summary_1, summary_2 = summarize_with_openai(video_id, title, transcript, participants)
 
     return summary_1, summary_2, transcript
 
