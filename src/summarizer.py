@@ -14,6 +14,10 @@ from decouple import config             # this is usually enough to read configs
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 openai.api_key = config('OPENAI_KEY')
+f_prompt_summary     = f'{basedir}/prompts/prompt_summary.txt'
+f_prompt_summary_agg = f'{basedir}/prompts/prompt_summary_agg.txt'
+f_prompt_rewrite     = f'{basedir}/prompts/prompt_rewrite.txt'
+rewrite_limit = 15000  # summary rewriting phase can handle 15k chars (~3k tokens)
 
 
 def get_video_id(url):
@@ -27,8 +31,6 @@ def get_video_id(url):
 def get_transcript(video_id):
     if not video_id:
         raise Exception('Video ID not found')
-        # print('Video ID not found.')
-        return None
 
     try:
         formatter = TextFormatter()
@@ -40,8 +42,6 @@ def get_transcript(video_id):
 
     except Exception as e:
         raise Exception('Could not download the transcript')
-        # print('Error downloading transcript:', e)
-        return None
 
 
 def open_file(filepath):
@@ -50,8 +50,8 @@ def open_file(filepath):
 
 
 def save_file(content, filepath):
-    with open(filepath, 'w', encoding='utf-8') as outfile:
-        outfile.write(content)
+    with open(filepath, 'a', encoding='utf-8') as outfile:
+        outfile.write(content + '\n')
 
 
 def gpt3_completion(prompt, model='text-davinci-003', temp=0.5, top_p=1.0, tokens=500, freq_pen=0.25, pres_pen=0.0, stop=['###']):
@@ -82,68 +82,73 @@ def gpt3_completion(prompt, model='text-davinci-003', temp=0.5, top_p=1.0, token
             retry += 1
             if retry >= max_retry:
                 raise Exception(f'GPT3 error: {str(e)}')
-            # print('Error communicating with OpenAI:', e)
             sleep(1)
 
 
 def ask_gpt(text, prompt, job='SUMMARY'):
+    width = 10000
+    token = 512
+    if job == 'REWRITE':
+        width = rewrite_limit
+        token = 1024
+    elif job=='SUMMARY_AGG':
+        # width = 8000
+        token = 2048
+
     # Summarize chunks
-    chunks = textwrap.wrap(text, width=10000)
+    chunks = textwrap.wrap(text, width=width)
     results = list()
+    length = 0
     for i, chunk in enumerate(chunks):
         constructed_prompt = prompt.replace('<<CONTENT>>', chunk)
         constructed_prompt = constructed_prompt.encode(encoding='ASCII',errors='ignore').decode()
 
-        output = ''
-        if job=='SUMMARY':
-            output = gpt3_completion(constructed_prompt, tokens=512)
-        elif job == 'REWRITE':
-            output = gpt3_completion(constructed_prompt, tokens=2048)
+        output = gpt3_completion(constructed_prompt, tokens=token)
         results.append(output)
-        # print(f'{i+1} of {len(chunks)}\n{output}\n\n\n')
+        length = length + len(output)
+        if length >= (rewrite_limit - 1000):
+            # print('Transcript too big. Summarizer limit reached. Trim.')
+            return '\n\n'.join(results)
 
-    return results
+    return '\n\n'.join(results)
 
 
-def summarize_with_openai(video_id, title, transcript):
+def summarize_transcript(video_id, title, transcript, participants=None):
 
     # Summarize the transcript (chunk by chunk if needed)
     if not transcript:
         raise Exception('Empty transcript. Nothing to summarize')
 
-    if (os.environ.get('TRANSCRIPT_LENGTH_RESTRICTION') == 1) and (len(transcript) > 20000):
+    if (os.environ.get('TRANSCRIPT_LENGTH_RESTRICTION') == '1') and (len(transcript) > 20000):
         raise Exception('Transcript too long. Your wallets health and well-being is important to us (unlike your wife)')
 
     # Summarize transcript
     summary_out = f'{basedir}/logs/{video_id}_summary_{time()}.txt'
     rewrite_out = f'{basedir}/logs/{video_id}_rewrite_{time()}.txt'
 
-    f_prompt_summary = f'{basedir}/prompts/prompt_summary.txt'
-    f_prompt_rewrite = f'{basedir}/prompts/prompt_rewrite.txt'
+    s_participants = f'This is a conversation between {participants}.'
+
+    prompt_summary = open_file(f_prompt_summary).replace('<<TITLE>>', title).replace('<<PARTICIPANTS>>', s_participants)
+    prompt_rewrite = open_file(f_prompt_rewrite).replace('<<TITLE>>', title).replace('<<PARTICIPANTS>>', s_participants)
+    prompt_summary_agg = open_file(f_prompt_summary_agg).replace('<<TITLE>>', title).replace('<<PARTICIPANTS>>', s_participants)
 
     # Summarize
-    prompt_summary = open_file(f_prompt_summary).replace('<<TITLE>>', title)
-    results_1 = ask_gpt(transcript, prompt_summary, 'SUMMARY')
-    summary_1 = '\n\n'.join(results_1)
+    summary_1 = ask_gpt(transcript, prompt_summary, 'SUMMARY')
     save_file(summary_1, summary_out)
 
     # Summarize the summary
-    prompt_rewrite = open_file(f_prompt_rewrite).replace('<<TITLE>>', title)
-    results_2 = ask_gpt(summary_1, prompt_rewrite, 'REWRITE')
-    summary_2 = '\n\n'.join(results_2)
+    summary_2 = ask_gpt(summary_1, prompt_rewrite, 'REWRITE')
     save_file(summary_2, rewrite_out)
 
     return summary_1, summary_2
     print('----- Mission Complete -----')
 
 
-# url = 'https://www.youtube.com/watch?v=kiMTRQXBol0&ab_channel=All-InPodcast'  # 1hr podcast
-# url = 'https://www.youtube.com/watch?v=Vt_t4hCjvuc'                           # 7min video
-def summarize_video(video_id, title):
+def summarize_video(video_id, title, participants=None):
     # Download transcript
     transcript = get_transcript(video_id)
-
-    summary_1, summary_2 = summarize_with_openai(video_id, title, transcript)
+    # Summarize
+    summary_1, summary_2 = summarize_transcript(video_id, title, transcript, participants)
 
     return summary_1, summary_2, transcript
 
