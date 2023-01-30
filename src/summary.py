@@ -16,8 +16,8 @@ def jsonify_ytsummary(yt_summary):
         openai_summary = json.loads(yt_summary.summary_2)
         return jsonify({
             'video_id': yt_summary.video_id,
-            'summary': openai_summary["summary"],
-            'chapters': openai_summary["paragraphs"],
+            'summary': openai_summary.get('summary', ''),
+            'chapters': openai_summary.get('key takeaways', ''),
             'user_id': yt_summary.user_id,
             'created_at': yt_summary.created_at,
             'updated_at': yt_summary.updated_at,
