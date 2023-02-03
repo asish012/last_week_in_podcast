@@ -1,4 +1,4 @@
-The following is a video transcript with the title "<<TITLE>>". <<PARTICIPANTS>> Please summarize the video transcript, ensuring that important information is included and the opinions of each individual are captured and narrated in first person. The summary should a brief summary.
+The following is a video transcript with the title "<<TITLE>>". <<CONTEXT>>. Please summarize the video transcript, ensuring that important information is included and the opinions of each individual are captured and narrated in first person. The summary should a brief summary.
 Please follow these general rules:
     Use a single quote for all references;
     Use active voice;

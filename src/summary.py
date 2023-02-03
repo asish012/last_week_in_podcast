@@ -17,7 +17,7 @@ def jsonify_ytsummary(yt_summary):
         return jsonify({
             'video_id': yt_summary.video_id,
             'summary': openai_summary.get('summary', ''),
-            'chapters': openai_summary.get('key takeaways', ''),
+            'chapters': openai_summary.get('paragraphs', ''),
             'user_id': yt_summary.user_id,
             'created_at': yt_summary.created_at,
             'updated_at': yt_summary.updated_at,
@@ -33,14 +33,14 @@ def save_summary():
 
     video_id = request.get_json().get('video_id', '')
     title = request.get_json().get('title', '')
-    participants = request.get_json().get('participants', '')
+    context = request.get_json().get('context', '')
 
     yt_summary = Summary.query.filter_by(video_id=video_id).first()
     if yt_summary:
         return jsonify_ytsummary(yt_summary), HTTP_200_OK
 
     try:
-        summary_1, summary_2, transcript = summarize_video(video_id, title, participants)
+        summary_1, summary_2, transcript = summarize_video(video_id, title, context)
 
         yt_summary = Summary(video_id=video_id, summary_1=summary_1, summary_2=summary_2, transcript=transcript, user_id=current_user)
         db.session.add(yt_summary)

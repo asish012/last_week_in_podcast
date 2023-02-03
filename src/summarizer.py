@@ -109,7 +109,7 @@ def ask_gpt(text, prompt, job='SUMMARY'):
     return '\n\n'.join(results)
 
 
-def summarize_transcript(video_id, title, transcript, participants=None):
+def summarize_transcript(video_id, title, transcript, context=None):
 
     # Summarize the transcript (chunk by chunk if needed)
     if not transcript:
@@ -122,10 +122,8 @@ def summarize_transcript(video_id, title, transcript, participants=None):
     summary_out = f'{basedir}/logs/{video_id}_summary_{time()}.txt'
     rewrite_out = f'{basedir}/logs/{video_id}_rewrite_{time()}.txt'
 
-    s_participants = f'This is a conversation between {participants}.'
-
-    prompt_summary = open_file(f_prompt_summary).replace('<<TITLE>>', title).replace('<<PARTICIPANTS>>', s_participants)
-    prompt_rewrite = open_file(f_prompt_rewrite).replace('<<TITLE>>', title).replace('<<PARTICIPANTS>>', s_participants)
+    prompt_summary = open_file(f_prompt_summary).replace('<<TITLE>>', title).replace('<<CONTEXT>>', context)
+    prompt_rewrite = open_file(f_prompt_rewrite).replace('<<TITLE>>', title).replace('<<CONTEXT>>', context)
 
     # Summarize
     summary_1 = ask_gpt(transcript, prompt_summary, 'SUMMARY')
@@ -139,11 +137,11 @@ def summarize_transcript(video_id, title, transcript, participants=None):
     print('----- Mission Complete -----')
 
 
-def summarize_video(video_id, title, participants=None):
+def summarize_video(video_id, title, context=None):
     # Download transcript
     transcript = get_transcript(video_id)
     # Summarize
-    summary_1, summary_2 = summarize_transcript(video_id, title, transcript, participants)
+    summary_1, summary_2 = summarize_transcript(video_id, title, transcript, context)
 
     return summary_1, summary_2, transcript
 

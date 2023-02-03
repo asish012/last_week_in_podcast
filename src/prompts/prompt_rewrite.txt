@@ -1,4 +1,4 @@
-The following paragraphs are chunks of summaries of a long video with the title "<<TITLE>>". <<PARTICIPANTS>> Organize these parts with a logical flow. Ensure that important information are included and the opinions of each individual are captured and narrated in first person.
+The following paragraphs are chunks of summaries of a long video with the title "<<TITLE>>". <<CONTEXT>>. Organize these parts with a logical flow. Ensure that important information are included and the opinions of each individual are captured and narrated in first person.
 The output should contain two parts. The first part will contain the aggregated summary, and the second part will contain an ordered list of all topics discussed in detail including anaphora resolution with titles.
 The final output should be in the following JSON format:
 {"summary":"", "paragraphs":["title":"", "content":""]}
