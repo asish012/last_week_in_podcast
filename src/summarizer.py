@@ -92,7 +92,7 @@ def ask_gpt(text, prompt, job='SUMMARY'):
         token = 1024
 
     # Summarize chunks
-    chunks = textwrap.wrap(text, width=width)
+    chunks = textwrap.wrap(text, width=width, replace_whitespace=False)
     results = list()
     length = 0
     for i, chunk in enumerate(chunks):
@@ -103,7 +103,7 @@ def ask_gpt(text, prompt, job='SUMMARY'):
         results.append(output)
         length = length + len(output)
         if length >= (rewrite_limit - 1000):
-            # print('Transcript too big. Summarizer limit reached. Trim.')
+            print('>>>>> Transcript too big. Summarizer limit reached. Trim.')
             return '\n\n'.join(results)
 
     return '\n\n'.join(results)
