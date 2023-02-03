@@ -15,7 +15,6 @@ from decouple import config             # this is usually enough to read configs
 basedir = os.path.abspath(os.path.dirname(__file__))
 openai.api_key = config('OPENAI_KEY')
 f_prompt_summary     = f'{basedir}/prompts/prompt_summary.txt'
-f_prompt_summary_agg = f'{basedir}/prompts/prompt_summary_agg.txt'
 f_prompt_rewrite     = f'{basedir}/prompts/prompt_rewrite.txt'
 rewrite_limit = 15000  # summary rewriting phase can handle 15k chars (~3k tokens)
 
@@ -91,9 +90,6 @@ def ask_gpt(text, prompt, job='SUMMARY'):
     if job == 'REWRITE':
         width = rewrite_limit
         token = 1024
-    elif job=='SUMMARY_AGG':
-        # width = 8000
-        token = 2048
 
     # Summarize chunks
     chunks = textwrap.wrap(text, width=width)
@@ -130,7 +126,6 @@ def summarize_transcript(video_id, title, transcript, participants=None):
 
     prompt_summary = open_file(f_prompt_summary).replace('<<TITLE>>', title).replace('<<PARTICIPANTS>>', s_participants)
     prompt_rewrite = open_file(f_prompt_rewrite).replace('<<TITLE>>', title).replace('<<PARTICIPANTS>>', s_participants)
-    prompt_summary_agg = open_file(f_prompt_summary_agg).replace('<<TITLE>>', title).replace('<<PARTICIPANTS>>', s_participants)
 
     # Summarize
     summary_1 = ask_gpt(transcript, prompt_summary, 'SUMMARY')
