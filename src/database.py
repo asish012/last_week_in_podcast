@@ -13,41 +13,22 @@ class User(db.Model):
     password = db.Column(db.Text(), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now())
     updated_at = db.Column(db.DateTime, onupdate=datetime.now())
-    bookmarks = db.relationship('Bookmark', backref="user")
-    summaries = db.relationship('Summary', backref="user")
+    activities = db.relationship('Activity', backref="user")
 
     def __repr__(self) -> str:
-        return 'User>>> {self.username}'
+        return f'User>>> {self.username}'
 
 
-class Bookmark(db.Model):
+class Activity(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.Text, nullable=True)
-    url = db.Column(db.Text, nullable=False)
-    short_url = db.Column(db.String(3), nullable=True)
-    visits = db.Column(db.Integer, default=0)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    used_quota = db.Column(db.Integer, default=0)
+    summary_ids = db.Column(db.Text(), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.now())
     updated_at = db.Column(db.DateTime, onupdate=datetime.now())
 
-    def generate_short_characters(self):
-        characters = string.digits+string.ascii_letters
-        picked_chars = ''.join(random.choices(characters, k=3))
-
-        link = self.query.filter_by(short_url=picked_chars).first()
-
-        if link:
-            self.generate_short_characters()
-        else:
-            return picked_chars
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
-        self.short_url = self.generate_short_characters()
-
     def __repr__(self) -> str:
-        return 'Boomark>>> {self.url}'
+        return f'Quota>>> {self.url}'
 
 
 class Summary(db.Model):
@@ -56,9 +37,8 @@ class Summary(db.Model):
     summary_1 = db.Column(db.Text, nullable=True)
     summary_2 = db.Column(db.Text, nullable=True)
     transcript = db.Column(db.Text, nullable=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     created_at = db.Column(db.DateTime, default=datetime.now())
     updated_at = db.Column(db.DateTime, onupdate=datetime.now())
 
     def __repr__(self) -> str:
-        return 'Summary>>> {self.video_id}\n{self.summary_2}'
+        return f'Summary>>> {self.video_id}\n{self.summary_2}'
