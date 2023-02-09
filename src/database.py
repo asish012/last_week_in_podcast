@@ -28,7 +28,7 @@ class Activity(db.Model):
     updated_at = db.Column(db.DateTime, onupdate=datetime.now())
 
     def __repr__(self) -> str:
-        return f'Quota>>> {self.url}'
+        return f'Activity>>> {self.user_id}\n{self.used_quota}\n{self.summary_ids}'
 
 
 class Summary(db.Model):
