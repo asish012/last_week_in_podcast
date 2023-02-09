@@ -13,7 +13,7 @@ class User(db.Model):
     password = db.Column(db.Text(), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now())
     updated_at = db.Column(db.DateTime, onupdate=datetime.now())
-    activities = db.relationship('Activity', backref="user")
+    activity = db.relationship('Activity', backref="user", uselist=False)
 
     def __repr__(self) -> str:
         return f'User>>> {self.username}'

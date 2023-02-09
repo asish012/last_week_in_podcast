@@ -82,7 +82,8 @@ def me():
     user = User.query.filter_by(id=user_id).first()
     return jsonify({
         'username': user.username,
-        'email': user.email
+        'email': user.email,
+        'used_quota': 0 if not user.activity else user.activity.used_quota
     }), HTTP_200_OK
 
 
