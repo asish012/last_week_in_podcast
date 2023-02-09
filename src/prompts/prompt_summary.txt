@@ -1,4 +1,11 @@
-Please summarize the following video transcript in a few sentences, ensuring that the important information is included and the summary is not too long or too short. The title of the video is "<<TITLE>>".
+The following is a video transcript with the title "<<TITLE>>". <<CONTEXT>>. Please make a brief summary of the video transcript, ensuring that important information is included and the opinions of each individual are captured and narrated in first person including anaphora.
+Please follow these general rules:
+    Use a single quote for all references;
+    Use active voice;
+    Use informal language;
+    Use simple sentences;
+    Use a clear and consistent tone;
+
 
 Transcript:
 <<CONTENT>>

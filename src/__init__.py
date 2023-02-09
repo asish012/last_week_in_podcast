@@ -4,9 +4,8 @@ from flask.json import jsonify
 from flask_jwt_extended import JWTManager
 from src.constants.http_status_codes import HTTP_404_NOT_FOUND, HTTP_500_INTERNAL_SERVER_ERROR
 from src.auth import auth
-from src.bookmarks import bookmarks
 from src.summary import summary
-from src.database import db, Bookmark
+from src.database import db
 from datetime import timedelta
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -33,7 +32,6 @@ def create_app(test_config=None):
 
     JWTManager(app)
     app.register_blueprint(auth)
-    app.register_blueprint(bookmarks)
     app.register_blueprint(summary)
 
     @app.errorhandler(HTTP_404_NOT_FOUND)
