@@ -1,0 +1,39 @@
+# Version 1
+
+The following paragraphs are chunks of summaries of a long video with the title "<<TITLE>>". <<PARTICIPANTS>> Organize these parts with a logical flow. Ensure that important information are included and the opinions of each individual are captured and narrated in first person.
+The output should contain two parts. The first part will contain the aggregated summary, and the second part will contain an ordered list of all topics discussed in detail including anaphora resolution with titles.
+The final output should be in the following json format:
+{"summary":"", "paragraphs":["title":"", "content":""]}
+Please follow these general rules:
+    Use a single quote for all references;
+    Use active voice;
+    Use informal language;
+    Use small and simple sentences;
+    Use a clear and consistent tone;
+
+Summaries:
+<<CONTENT>>
+
+###
+Output:
+
+
+
+# Version 2
+
+The following paragraphs are chunks of summaries of a long video with the title "<<TITLE>>". <<PARTICIPANTS>> Organize these parts with a logical flow. Ensure that important information are included and the opinions of each individual are captured and narrated in first person.
+The output should contain a short summary and an ordered list of topics discussed including anaphora resolution with titles.
+The final output should be in the following json format:
+{"summary":"", "key takeaways":["title":"", "content":""]}
+Please follow these general rules:
+    Use a single quote for all references;
+    Use active voice;
+    Use informal language;
+    Use small and simple sentences;
+    Use a clear and consistent tone;
+
+Summaries:
+<<CONTENT>>
+
+###
+Output:

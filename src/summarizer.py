@@ -92,12 +92,18 @@ def ask_gpt(text, prompt, job='SUMMARY'):
         token = 1024
 
     # Summarize chunks
-    chunks = textwrap.wrap(text, width=width, replace_whitespace=False)
+    chunks = [text] if len(text) <= width else textwrap.wrap(text, width=width, drop_whitespace=False)
     results = list()
     length = 0
     for i, chunk in enumerate(chunks):
         constructed_prompt = prompt.replace('<<CONTENT>>', chunk)
         constructed_prompt = constructed_prompt.encode(encoding='ASCII',errors='ignore').decode()
+
+        if job=='REWRITE': # Skip rewrite step for newsletter. Do it manually with ChatGPT.
+            filename = f'gpt3_rewrite_prompt{time()}.log'
+            with open(f'{basedir}/logs/{filename}', 'w') as outfile:
+                outfile.write(constructed_prompt)
+            return ''
 
         output = gpt3_completion(constructed_prompt, tokens=token)
         results.append(output)
@@ -139,7 +145,9 @@ def summarize_transcript(video_id, title, transcript, context=None):
 
 def summarize_video(video_id, title, context=None):
     # Download transcript
+    summarizer_capacity = 240000
     transcript = get_transcript(video_id)
+    transcript = textwrap.wrap(transcript, width=summarizer_capacity, drop_whitespace=False)[0]
     # Summarize
     summary_1, summary_2 = summarize_transcript(video_id, title, transcript, context)
 
