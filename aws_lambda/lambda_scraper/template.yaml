@@ -1,0 +1,36 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 128
+    Tracing: Active
+  Api:
+    TracingEnabled: true
+Resources:
+  ArticleScraperFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: article_scraper/
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      Architectures:
+      - x86_64
+      # Events:
+      #   ArticleScraper:
+      #     Type: Api
+      #     Properties:
+      #       Path: /medium
+      #       Method: get
+
+# Outputs:
+#   ArticleScraperApi:
+#     Description: API Gateway endpoint URL for Prod stage for Hello World function
+#     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
+#   ArticleScraperFunction:
+#     Description: Hello World Lambda Function ARN
+#     Value: !GetAtt ArticleScraperFunction.Arn
+#   ArticleScraperFunctionIamRole:
+#     Description: Implicit IAM Role created for Hello World function
+#     Value: !GetAtt ArticleScraperFunctionRole.Arn
