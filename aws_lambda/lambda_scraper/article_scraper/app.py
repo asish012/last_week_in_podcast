@@ -8,6 +8,8 @@ def lambda_handler(event, context):
     print(event)
 
     url = event['url']
+    if not url:
+        return {'statusCode': 400, 'message': 'url missing', 'body': ''}
 
     headers = {
         'user-agent':'Mozilla/5.0'
