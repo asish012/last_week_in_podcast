@@ -2,14 +2,15 @@ import re
 import json
 import requests
 from bs4 import BeautifulSoup
+from urllib.parse import urlparse
 
 
 def lambda_handler(event, context):
     print(event)
 
     url = event['url']
-    if not url:
-        return {'statusCode': 400, 'message': 'url missing', 'body': ''}
+    if not uri_validator(url):
+        return {'statusCode': 400, 'message': 'invalid url', 'body': ''}
 
     headers = {
         'user-agent':'Mozilla/5.0'
@@ -29,3 +30,11 @@ def lambda_handler(event, context):
         'statusCode': 200,
         'body': json.dumps(text)
     }
+
+
+def uri_validator(x):
+    try:
+        result = urlparse(x)
+        return all([result.scheme, result.netloc])
+    except:
+        return False
