@@ -41,3 +41,10 @@ If you or someone you know would benefit from this newsletter, I'd love for you 
 # Version 2: for friends promoting the newsletter
 Do you enjoy podcasts but struggle to keep up with all the latest episodes of your favorite podcasts? If so, my friend's new newsletter "Last Week in Podcast" is perfect for you. This free newsletter provides a concise yet comprehensive summary of the latest podcast episodes each week, saving you time and ensuring you never miss out on the latest and greatest shows.  
 If you or someone you know would benefit from "Last Week in Podcast," simply follow the link [Last Week in Podcast](https://lastweekinpodcast.beehiiv.com/) to check it out and subscribe. It's that easy!
+
+# Grow
+
+- reaching out to people in your Gmail contacts
+    - saying: we've been in communication at some point in time, and i'm starting this newsletter here's why and how it might be interesting for you. you'll only get one email directly from me, i'm a human not a bot. and if you want to join along that'd be great.
+- ask people that you know have some influence even if it's just with the pta (prior to admission)
+    - saying: hey i'm creating this thing would you be open to sharing it like you know do you have anybody else that you think you know would be interested in this
