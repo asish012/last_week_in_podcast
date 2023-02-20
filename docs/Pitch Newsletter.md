@@ -1,3 +1,10 @@
+
+Get the most out of your podcast time with our episode summaries of your favorite podcasts.
+
+Get the most out of your podcast time with our episode summaries, top picks and recommendations.
+
+Get the highlights from your favorite podcasts and make the most of your podcast time.
+
 # Version 1
 
 Hi [name],
@@ -24,3 +31,13 @@ If you or someone you know would benefit from this newsletter, I'd love for you 
 I can't wait to share my insights and keep you updated on all the latest and greatest in the world of podcasts.
 
 Take care!
+
+# Version 1: for friends promoting the newsletter
+A friend of mine just launched a free newsletter for podcast lovers that will help you stay up-to-date with all your favorite shows.
+
+A friend of mine just launched a free newsletter for podcast lovers, that will provide you a quick and comprehensive summary of the latest podcast episodes, saving you hours of listening time.
+If you or someone you know would benefit from this newsletter, I'd love for you to join us! Simply follow the link to check it out: [Last Week in Podcast](https://lastweekinpodcast.beehiiv.com/).
+
+# Version 2: for friends promoting the newsletter
+Do you enjoy podcasts but struggle to keep up with all the latest episodes of your favorite podcasts? If so, my friend's new newsletter "Last Week in Podcast" is perfect for you. This free newsletter provides a concise yet comprehensive summary of the latest podcast episodes each week, saving you time and ensuring you never miss out on the latest and greatest shows.  
+If you or someone you know would benefit from "Last Week in Podcast," simply follow the link [Last Week in Podcast](https://lastweekinpodcast.beehiiv.com/) to check it out and subscribe. It's that easy!
