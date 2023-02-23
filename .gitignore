@@ -7,6 +7,7 @@
 *gpt3_logs/
 *logs/
 *experiments*
+*/audio/*
 
 ### Flask ###
 instance/*
