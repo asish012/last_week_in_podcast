@@ -1,0 +1,12 @@
+Extract the important topics discussed in the following video transcript.
+The output should contain the extract with a meaningful title in the following JSON format:
+{"Title":"", "Summary":""}
+Please follow these general rules:
+    Use a single quote for all references;
+    Use active voice;
+    Use informal language;
+    Use simple sentences;
+    Use a clear and consistent tone;
+
+Transcript:
+<<TEXT>>
