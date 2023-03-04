@@ -1,4 +1,4 @@
-Extract the important topics discussed in the following video transcript.
+Extract the important topics discussed in the following video transcript. Narrate every individual's opinions in the first person, including anaphora.
 The output should contain the extract with a meaningful title in the following JSON format:
 {"Title":"", "Summary":""}
 Please follow these general rules:
