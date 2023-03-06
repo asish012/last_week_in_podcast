@@ -1,7 +1,9 @@
-Extract the important topics discussed in the following video transcript. Narrate every individual's opinions in the first person, including anaphora.
-The output should contain the extract with a meaningful title in the following JSON format:
+Briefly summarize the discussed topic in this video. Narrate every individual's opinions.
+The output should contain the summary with a meaningful title in the following JSON format:
 {"Title":"", "Summary":""}
 Please follow these general rules:
+    If you need to refer this video, Use "in this video";
+    If possible use the person's name who says something;
     Use a single quote for all references;
     Use active voice;
     Use informal language;
@@ -15,4 +17,10 @@ Chinese peace proposal in Ukraine which I think said an interesting topic can we
 {
     "Title": "Chinese peace proposal in Ukraine", 
     "Summary": "The participants then discuss the idea that the Chinese peace proposal is a clever diplomatic move that aims to grab the moral high ground. They criticize the US for not acting as a mediator in the peace process and suggest that this is because the US is a co-belligerent in the American proxy war against Russia. The participants also discuss how the war in Ukraine benefits China and how the US's focus on the war is interfering with its pivot to Asia. They argue that the Marvel movie worldview of the US as the super friends against the axis of evil is problematic and that there is no natural alliance between China, Russia, and Iran. They criticize the authoritarian regimes and argue that the West should act in unison to defend free countries from despots."
+}
+
+
+{
+    "Title":"Discussion on Chinese Peace Proposal in Ukraine and US's Role in Mediating Conflicts",
+    "Summary":"In this video, a group of individuals discusses the recent Chinese peace proposal in Ukraine and the US's role in mediating conflicts. One of the participants suggests that the Chinese proposal is a diplomatic maneuver to grab the moral high ground, while the US is not playing its traditional role as a peacemaker. They argue that the US is throwing cold water on the peace process and is not trusted to mediate because it is fighting an American proxy war against Russia. Another participant adds that the war in Ukraine is benefiting China as it is interfering with the US's pivot to Asia, depleting the US stockpiles of weapons, and causing economic sanctions on Russia. The group discusses the problem with the US's overly moralistic view of foreign policy and how it has pushed China, Russia, and Iran closer together. The discussion ends with a disagreement over the spread of democracy and the West's role in acting in unison."
 }

@@ -1,7 +1,9 @@
-Extract the important topics discussed in the following video transcript. Narrate every individual's opinions in the first person, including anaphora.
-The output should contain the extract with a meaningful title in the following JSON format:
+Briefly summarize the discussed topic in this video. Narrate every individual's opinions.
+The output should contain the summary with a meaningful title in the following JSON format:
 {"Title":"", "Summary":""}
 Please follow these general rules:
+    If you need to refer this video, Use "in this video";
+    If possible use the person's name who says something;
     Use a single quote for all references;
     Use active voice;
     Use informal language;
