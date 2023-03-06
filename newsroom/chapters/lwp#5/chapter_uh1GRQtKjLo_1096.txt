@@ -17,3 +17,30 @@ from episode 96 Randall stutman so feedback's really difficult because you know 
     "Title": "How to Give Feedback like a Pro", 
     "Summary": "In this video, Randall Stutman discusses the art of giving feedback. He explains that the universal of feedback is how you carry messages and that the way you offer criticism is what distinguishes great leaders. Stutman also distinguishes between a technique and a routine in terms of feedback, and explains that feedback should be made into a routine. He gives an example of the balance in feedback, where one should start with some positive comments before moving on to constructive criticism. He notes that negative information carries more weight, so it's important to find a balance in feedback delivery."
 }
+
+
+The following are three discussed topics in a youtube video. Make an aggregated sneak peek preview of them.
+
+In this episode, Shane brings 5 clips from his archive of interviews where you'll learn about different aspects of leadership. It covers the defination of leadership, the difference between average and great leaders, how to give feedback as a leader, tension between doing what is right and being right, and the importance of candor in effective leadership.
+
+
+ - Jim Collins - What is leadership?
+ - Jennifer Garvey Berger - Average vs. great leaders
+ - Randall Stutman - How to give feedback
+ - Kat Cole - Doing right versus being right
+ - Alan Mulally - Principles for running a team
+ - Diana Chapman - On candor
+
+ The first topic is "Learning Leadership: Two Key Elements," where Jim Collins will discuss how leadership is an art that can be learned from others and provide examples of leaders who have exercised two key elements effectively. The second topic, "The Qualities of a Great Leader," will cover what makes a great leader and how the kind of leadership needed today is about creating conditions that make everyone better. Lastly, "How to Give Feedback like a Pro" will focus on the art of giving feedback, including techniques and routines to make feedback delivery more effective, and finding a balance between positive comments and constructive criticism.
+
+
+---------
+As sales analysts, our main focus is on monthly and quarterly sales figures, and we find that simple bar charts are most effective for presenting this data. However, in some cases, line charts can be helpful for identifying trends. Deepnote provides both of these chart types, as well as others. Pie charts and donut charts are useful for visualizing different parts of a whole. Although Deepnote does not currently offer pie charts, it is possible to create them using Matplotlib or Seaborn and integrate them into the dashboard.
+---------
+As sales analysts, we often find ourselves fixated on monthly and quarterly sales figures. For such situations, simple bar charts prove to be the most effective visualization tool. However, for spotting trends, line charts work wonders. Fortunately, Deepnote offers both these charting options, and much more.
+
+When it comes to representing different segments of a whole, pie charts or donut charts are the go-to visualization choice. Unfortunately, Deepnote does not include pie charts at the moment. But, fear not! You can easily write your own Matplotlib or Seaborn code to generate those pie charts and include them in your dashboard.
+
+---------
+
+As sales analysts, we often focus on monthly and quarterly sales figures, and we find that simple bar charts are most effective for presenting this data. However, in some cases, line charts can be helpful for identifying trends. Thankfully, Deepnote provides both of these chart types, and others out of the box. However, when it comes to representing different segments of a whole, pie charts or donut charts are the go-to visualization choice. Unfortunately, Deepnote does not include pie charts at the moment. But, fear not! You can easily write your own Matplotlib or Seaborn code to generate those pie charts and include them in your dashboard.
