@@ -1,4 +1,4 @@
-Briefly summarize the discussed topic in this video. Narrate every individual's opinions.
+Concisely summarize the discussed topic in this video. Narrate every individual's opinions.
 The output should contain the summary with a meaningful title in the following JSON format:
 {"Title":"", "Summary":""}
 Please follow these general rules:
