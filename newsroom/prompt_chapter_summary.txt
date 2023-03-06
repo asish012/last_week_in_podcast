@@ -1,4 +1,4 @@
-Make a short and concisely summary of the discussed topic in this video. Narrate every individual's opinions.
+Make a short and concise summary of the discussed topic in this video. Narrate every individual's opinions.
 The output should contain the summary with a meaningful title.
 Please follow these general rules:
     If you need to refer this video, Use "in this video";
